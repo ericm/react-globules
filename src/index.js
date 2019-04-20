@@ -12,23 +12,34 @@ export default class extends Component {
         };
         document.body.onresize = this.resize.bind(this);
         if (!!this.props.background) this.setState({background: this.props.background});
+        
     }
 
-    componentDidMount() {
-        this.resize();
+    async componentDidMount() {
+        await this.resize(true);
+        this.rands = this.genRands();
+        this.draw();
     }
 
     draw = () => {
         this.drawBack();
-        this.genRands();
+        console.log(this.rands);
+        for (let rand of this.rands) {
+            const rad = Math.random()*200;
+            this.ctx.fillStyle = this.state.primary;
+            this.ctx.beginPath();
+            this.ctx.arc(rand[0], rand[1], rad, 0, 2*Math.PI);
+            this.ctx.fill();
+        }
     }
 
     genRands = () => {
         let out = [];
+        console.log(this.state.width);
         for (let _i = 0; _i < this.state.width / 100; _i++) {
             out.push([Math.random()*(this.state.width-100), Math.random()*(this.state.height-100)]);
         }
-        console.log(out);
+        return out;
     }
 
     drawBack = () => {
@@ -39,7 +50,7 @@ export default class extends Component {
     clear = () => this.ctx.clearRect(0, 0, this.state.width, this.state.height)
     
 
-    async resize() {
+    async resize(init = false) {
         if (this.props.heightPercent) {
             const height = window.innerHeight*(this.props.height/100);
             await this.setState({height});
@@ -48,8 +59,11 @@ export default class extends Component {
             const width = document.body.clientWidth*(this.props.width/100);
             await this.setState({width});
         }
-        await this.clear();
-        this.draw();
+        if (!init) {
+            await this.clear();
+            this.draw();
+        }
+        
     }
 
     render() {
