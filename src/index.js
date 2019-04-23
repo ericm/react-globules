@@ -46,8 +46,16 @@ export default class extends Component {
             this.count = 0;
             this.newRand(this.rands);
         }
-        for (let rand of this.rands) {
-            rand.move()
+        
+        for (let i in this.rands) {
+            let rand = this.rands[i];
+            this.rands.forEach((randOther, j, _) => {
+                if (i !== j &&  Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam) {
+                    rand.dirX *= -1;
+                    rand.dirY *= -1;
+                }
+            });
+            rand.move();
         }
         this.count++;
         this.draw();
@@ -55,8 +63,8 @@ export default class extends Component {
     }
 
     draw = () => {
+        console.log("aaa");
         this.drawBack();
-        console.log(this.rands);
         for (let rand of this.rands) {
             this.ctx.fillStyle = this.state.primary + 'aa';
             this.ctx.strokeStyle = this.state.primary + 'ef';
