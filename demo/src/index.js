@@ -11,7 +11,7 @@ class Demo extends Component {
                 heightPercent={true} 
                 width={100} 
                 height={100} 
-                speed={.3}
+                speed={.4}
             />
         </div>
     }

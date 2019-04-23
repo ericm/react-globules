@@ -10,10 +10,21 @@ class Glob {
         this.vel = speed;
     }
 
+    count = 0
+
     move = () => { 
+        this.count++;
+        if (this.count === 50) {
+            this.dirY = Math.ceil(Math.random() - 1);
+        } else if (this.count === 100) {
+            this.dirX =  Math.ceil(Math.random() - 1);
+            this.count = 0;
+        }
         this.x += this.dirX * this.vel;
         this.y += this.dirY * this.vel;
     }
+
+    
     
 }
 
@@ -41,18 +52,19 @@ export default class extends Component {
         window.requestAnimationFrame(this.step);
     }
 
+    changed = [];
+
     step = () => {
         if (this.count === 500) {
             this.count = 0;
             this.newRand(this.rands);
         }
-        
         for (let i in this.rands) {
             let rand = this.rands[i];
             this.rands.forEach((randOther, j, _) => {
-                if (i !== j &&  Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam) {
-                    rand.dirX *= -1;
-                    rand.dirY *= -1;
+                if (i !== j && Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam) {
+                    rand.dirX = (randOther.dirX + Math.ceil(Math.random()*2 - 1)*3) / 4;
+                    rand.dirY = (randOther.dirY + Math.ceil(Math.random()*2 - 1)*3) / 4;
                 }
             });
             rand.move();
@@ -63,7 +75,7 @@ export default class extends Component {
     }
 
     draw = () => {
-        console.log("aaa");
+        console.log(this.rands);
         this.drawBack();
         for (let rand of this.rands) {
             this.ctx.fillStyle = this.state.primary + 'aa';
@@ -93,8 +105,8 @@ export default class extends Component {
             Math.random()*(this.state.width-100), 
             Math.random()*(this.state.height-100), 
             Math.random()*200,
-            Math.random()*3, 
-            Math.random()*3,
+            Math.random()*2, 
+            Math.random()*2,
             this.props.speed
             )
         )
