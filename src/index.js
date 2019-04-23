@@ -9,6 +9,12 @@ class Glob {
         this.dirY = Math.ceil(dirY - 1);
         this.vel = speed;
     }
+
+    move = () => { 
+        this.x += this.dirX * this.vel;
+        this.y += this.dirY * this.vel;
+    }
+    
 }
 
 export default class extends Component {
@@ -41,8 +47,7 @@ export default class extends Component {
             this.newRand(this.rands);
         }
         for (let rand of this.rands) {
-            rand.x += rand.dirX*this.props.speed;
-            rand.y += rand.dirY*this.props.speed;
+            rand.move()
         }
         this.count++;
         this.draw();
@@ -113,12 +118,13 @@ export default class extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{margin: 0, padding: 0, border: 0}}>
                 <div style={{
                     width: this.state.width,
                     height: this.state.height,
                     position: "relative",
-                    zIndex: 2
+                    zIndex: 2,
+                    margin: 0, padding: 0, border: 0
                 }}>
                     {this.props.children}
                 </div>
@@ -126,7 +132,7 @@ export default class extends Component {
                     ref={ref => { if (!!ref) this.ctx = ref.getContext('2d'); }} 
                     width={this.state.width}
                     height={this.state.height}
-                    style={{position:"absolute", top: 0, zIndex: 1}}
+                    style={{position:"absolute", top: 0, zIndex: 1, margin: 0, padding: 0, border: 0}}
                 />
             </div>
         );
