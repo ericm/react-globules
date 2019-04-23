@@ -114,13 +114,19 @@ export default class extends Component {
     render() {
         return (
             <div>
-                <div>
+                <div style={{
+                    width: this.state.width,
+                    height: this.state.height,
+                    position: "relative",
+                    zIndex: 2
+                }}>
                     {this.props.children}
                 </div>
                 <canvas 
                     ref={ref => { if (!!ref) this.ctx = ref.getContext('2d'); }} 
                     width={this.state.width}
-                    height={this.state.height} 
+                    height={this.state.height}
+                    style={{position:"absolute", top: 0, zIndex: 1}}
                 />
             </div>
         );
