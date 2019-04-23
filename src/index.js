@@ -1,4 +1,16 @@
 import React, {Component} from 'react';
+
+class Glob {
+    constructor(x, y, diam, dirX, dirY, speed) {
+        this.x = x;
+        this.y = y;
+        this.diam = diam;
+        this.dirX = Math.ceil(dirX - 1);
+        this.dirY = Math.ceil(dirY - 1);
+        this.vel = speed;
+    }
+}
+
 export default class extends Component {
 
     constructor(props) {
@@ -29,8 +41,8 @@ export default class extends Component {
             this.newRand(this.rands);
         }
         for (let rand of this.rands) {
-            rand[0] += Math.ceil(rand[3]-1)*this.props.speed;
-            rand[1] += Math.ceil(rand[4]-1)*this.props.speed;
+            rand.x += rand.dirX*this.props.speed;
+            rand.y += rand.dirY*this.props.speed;
         }
         this.count++;
         this.draw();
@@ -45,11 +57,13 @@ export default class extends Component {
             this.ctx.strokeStyle = this.state.primary + 'ef';
             this.ctx.lineWidth = 7;
             this.ctx.beginPath();
-            this.ctx.arc(rand[0], rand[1], rand[2], 0, 2*Math.PI);
+            this.ctx.arc(rand.x, rand.y, rand.diam, 0, 2*Math.PI);
             this.ctx.fill();
             this.ctx.stroke();
         }
     }
+
+    
 
     genRands = () => {
         let out = [];
@@ -61,7 +75,16 @@ export default class extends Component {
     }
 
     // x, y, diameter, deg1, deg2
-    newRand = (out) => out.push([Math.random()*(this.state.width-100), Math.random()*(this.state.height-100), Math.random()*200, Math.random()*3, Math.random()*3])
+    newRand = (out) => out.push(
+        new Glob(
+            Math.random()*(this.state.width-100), 
+            Math.random()*(this.state.height-100), 
+            Math.random()*200,
+            Math.random()*3, 
+            Math.random()*3,
+            this.props.speed
+            )
+        )
 
     drawBack = () => {
         this.ctx.fillStyle = this.state.background;
