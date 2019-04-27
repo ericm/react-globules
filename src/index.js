@@ -7,16 +7,16 @@ class Glob {
         this.diam = diam;
         this.dirX = Math.ceil(dirX - 1);
         this.dirY = Math.ceil(dirY - 1);
-        this.vel = speed;
+        this.vel = speed/20;
     }
 
     count = 0
 
     move = () => { 
         this.count++;
-        if (this.count === 50) {
+        if (this.count === 100) {
             this.dirY = Math.ceil(Math.random() - 1);
-        } else if (this.count === 100) {
+        } else if (this.count === 200) {
             this.dirX =  Math.ceil(Math.random() - 1);
             this.count = 0;
         }
@@ -35,13 +35,12 @@ export default class extends Component {
         this.state = {
             width: 0, 
             height: 0, 
-            primary: '#80ffb0', 
-            secondary: '#1ac75c', 
-            background: '#3ce47c'
+            primary: this.props.primary || '#8e1957', 
+            secondary: this.props.secondary || '#8e1957', 
+            background: this.props.background || '#c5076b',
+            density: this.props.density || 30
         };
         document.body.onresize = () => this.resize.bind(this)();
-        if (!!this.props.background) this.setState({background: this.props.background});
-        
     }
 
     async componentDidMount() {
@@ -67,9 +66,9 @@ export default class extends Component {
                     Math.random()*10 > 9) {
                     rand.dirX = (randOther.dirX + Math.ceil(Math.random()*2 - 1)*3) / 4;
                     rand.dirY = (randOther.dirY + Math.ceil(Math.random()*2 - 1)*3) / 4;
-                } else if (Math.random()*100 > 95) {
-                    rand.dirX -= .1;
-                    rand.dirY -= .1;
+                } else if (Math.random()*100 > 60) {
+                    rand.dirX += (Math.random()-.5)*.25;
+                    rand.dirY += (Math.random()-.5)*.25;
                 }
             });
             rand.move();
@@ -77,6 +76,10 @@ export default class extends Component {
         this.count++;
         this.draw();
         window.requestAnimationFrame(this.step);
+    }
+
+    move = e => {
+        
     }
 
     draw = () => {
@@ -98,7 +101,7 @@ export default class extends Component {
     genRands = () => {
         let out = [];
         console.log(this.state.width);
-        for (let _i = 0; _i < this.state.width / 100; _i++) {
+        for (let _i = 0; _i < (this.state.width / (100-this.props.density))*1.5; _i++) {
             this.newRand(out);            
         }
         return out;
@@ -143,7 +146,7 @@ export default class extends Component {
 
     render() {
         return (
-            <div style={{margin: 0, padding: 0, border: 0}}>
+            <div style={{margin: 0, padding: 0, border: 0, background: this.state.background}}>
                 <div style={{
                     width: this.state.width,
                     height: this.state.height,
