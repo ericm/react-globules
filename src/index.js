@@ -62,9 +62,14 @@ export default class extends Component {
         for (let i in this.rands) {
             let rand = this.rands[i];
             this.rands.forEach((randOther, j, _) => {
-                if (i !== j && Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam) {
+                if (i !== j && rand.x < window.innerWidth - 100 && rand.y < window.innerHeight - 100 &&
+                    Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam && 
+                    Math.random()*10 > 9) {
                     rand.dirX = (randOther.dirX + Math.ceil(Math.random()*2 - 1)*3) / 4;
                     rand.dirY = (randOther.dirY + Math.ceil(Math.random()*2 - 1)*3) / 4;
+                } else if (Math.random()*100 > 95) {
+                    rand.dirX -= .1;
+                    rand.dirY -= .1;
                 }
             });
             rand.move();
