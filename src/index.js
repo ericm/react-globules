@@ -36,7 +36,6 @@ export default class extends Component {
             width: 0, 
             height: 0, 
             primary: this.props.primary || '#8e1957', 
-            secondary: this.props.secondary || '#8e1957', 
             background: this.props.background || '#c5076b',
             density: this.props.density || 30
         };
@@ -60,17 +59,29 @@ export default class extends Component {
         }
         for (let i in this.rands) {
             let rand = this.rands[i];
-            this.rands.forEach((randOther, j, _) => {
-                if (i !== j && rand.x < window.innerWidth - 100 && rand.y < window.innerHeight - 100 &&
-                    Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam && 
-                    Math.random()*10 > 9) {
-                    rand.dirX = (randOther.dirX + Math.ceil(Math.random()*2 - 1)*3) / 4;
-                    rand.dirY = (randOther.dirY + Math.ceil(Math.random()*2 - 1)*3) / 4;
-                } else if (Math.random()*100 > 60) {
-                    rand.dirX += (Math.random()-.5)*.25;
-                    rand.dirY += (Math.random()-.5)*.25;
-                }
-            });
+            let bounded = false;
+            if (rand.x > window.innerWidth) {
+                rand.dirX = -2;
+                bounded = true;
+            }
+            if (rand.y > window.innerHeight) {
+                rand.dirY = -2;
+                bounded = true;
+            }
+            if (!bounded) {
+                this.rands.forEach((randOther, j, _) => {
+                    if (i !== j && rand.x < window.innerWidth - 100 && rand.y < window.innerHeight - 100 &&
+                        Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam && 
+                        Math.random()*10 > 9) {
+                        rand.dirX = (Math.ceil(Math.random()*2 - 1)*9) / 10;
+                        rand.dirY = (Math.ceil(Math.random()*2 - 1)*9) / 10;
+                    } else if (Math.random()*100 > 60) {
+                        rand.dirX += (Math.random()-.5)*.25;
+                        rand.dirY += (Math.random()-.5)*.25;
+                    }
+                });
+            }
+            
             rand.move();
         }
         this.count++;
@@ -78,12 +89,22 @@ export default class extends Component {
         window.requestAnimationFrame(this.step);
     }
 
+    coordLast = null
+
     move = e => {
-        
+        const coords = {x: e.clientX, y: e.clientY}
+        if (this.coordLast === null) this.coordLast = coords;
+        for (let rand of this.rands) {
+            if (Math.abs(rand.x - coords.x) < 200) {
+                rand.x += (coords.x - this.coordLast.x) / 300;
+            }
+            if (Math.abs(rand.y - coords.y) < 200) {
+                rand.y += (coords.y - this.coordLast.y) / 300;
+            }
+        }
     }
 
     draw = () => {
-        console.log(this.rands);
         this.drawBack();
         for (let rand of this.rands) {
             this.ctx.fillStyle = this.state.primary + 'aa';
@@ -100,7 +121,6 @@ export default class extends Component {
 
     genRands = () => {
         let out = [];
-        console.log(this.state.width);
         for (let _i = 0; _i < (this.state.width / (100-this.props.density))*1.5; _i++) {
             this.newRand(out);            
         }
@@ -108,16 +128,21 @@ export default class extends Component {
     }
 
     // x, y, diameter, deg1, deg2
-    newRand = (out) => out.push(
-        new Glob(
-            Math.random()*(this.state.width-100), 
-            Math.random()*(this.state.height-100), 
-            Math.random()*200,
-            Math.random()*2, 
-            Math.random()*2,
-            this.props.speed
+    newRand = (out) => {
+        const coords = { x: Math.random()*(this.state.width-100), y: Math.random()*(this.state.height-100) };
+        if (out.filter(v => { return Math.abs(v.x - coords.x) < 400 }).length > 0) coords.x += 100*Math.floor(Math.random()-.5);
+        if (out.filter(v => { return Math.abs(v.y - coords.y) < 400 }).length > 0) coords.y -= 100*Math.floor(Math.random()-.5);
+        out.push(
+            new Glob(
+                coords.x, 
+                coords.y, 
+                Math.random()*200,
+                Math.random()*2, 
+                Math.random()*2,
+                this.props.speed
             )
         )
+    }
 
     drawBack = () => {
         this.ctx.fillStyle = this.state.background;
@@ -147,12 +172,13 @@ export default class extends Component {
     render() {
         return (
             <div style={{margin: 0, padding: 0, border: 0, background: this.state.background}}>
-                <div style={{
+                <div onMouseMove={this.move} style={{
                     width: this.state.width,
                     height: this.state.height,
                     position: "relative",
                     zIndex: 2,
-                    margin: 0, padding: 0, border: 0
+                    margin: 0, padding: 0, border: 0,
+                    background: "radial-gradient(circle, rgba(2,0,36,0) 0%, rgba(9,9,121,0) 6%, rgba(0,0,0,0.45702030812324934) 100%)"
                 }}>
                     {this.props.children}
                 </div>
