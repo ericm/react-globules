@@ -1,6 +1,6 @@
 {
   "name": "react-globules",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React JS component that gives your project a cool interactive background ",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -31,7 +31,7 @@
   "author": "Eric Moynihan <git@moynihan.io>",
   "homepage": "https://globules.moynihan.io/",
   "license": "MIT",
-  "repository": "",
+  "repository": "https://github.com/ericm/react-globules",
   "keywords": [
     "react-component"
   ]
