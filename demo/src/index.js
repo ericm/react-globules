@@ -21,7 +21,7 @@ class Demo extends Component {
                 
             </Globules>
             <div style={{padding: 12, background: "rgb(8, 2, 7)", textAlign: "center"}}>
-                <a style={{color: "#c5076b", textAlign: "center"}} href="#">Reload</a>
+                <a style={{color: "#c5076b", textAlign: "center"}} href="/">Reload</a>
             </div>
             
         </div>

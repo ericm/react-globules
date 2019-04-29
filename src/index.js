@@ -33,9 +33,9 @@ export default class extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 0, 
-            height: 0, 
-            primary: this.props.primary || '#8e1957', 
+            width: this.props.height, 
+            height: this.props.width, 
+            primary: this.props.color || '#8e1957', 
             background: this.props.background || '#c5076b',
             density: this.props.density || 30
         };
@@ -70,7 +70,7 @@ export default class extends Component {
             }
             if (!bounded) {
                 this.rands.forEach((randOther, j, _) => {
-                    if (i !== j && rand.x < window.innerWidth - 100 && rand.y < window.innerHeight - 100 &&
+                    if (i != j && rand.x < window.innerWidth - 100 && rand.y < window.innerHeight - 100 &&
                         Math.sqrt((rand.x - randOther.x)**2 + (rand.y - randOther.y)**2) <= randOther.diam + rand.diam && 
                         Math.random()*10 > 9) {
                         rand.dirX = (Math.ceil(Math.random()*2 - 1)*9) / 10;
@@ -121,8 +121,8 @@ export default class extends Component {
 
     genRands = () => {
         let out = [];
-        for (let _i = 0; _i < (this.state.width / (100-this.props.density))*1.5; _i++) {
-            this.newRand(out);            
+        for (let _i = 0; _i < (this.state.width / (100-this.state.density))*1.5; _i++) {
+            this.newRand(out);
         }
         return out;
     }
@@ -153,7 +153,6 @@ export default class extends Component {
     
 
     async resize(init = false) {
-        console.log(init);
         if (this.props.heightPercent) {
             const height = window.innerHeight*(this.props.height/100);
             await this.setState({height});
@@ -171,7 +170,7 @@ export default class extends Component {
 
     render() {
         return (
-            <div style={{margin: 0, padding: 0, border: 0, background: this.state.background}}>
+            <div style={{margin: 0, padding: 0, border: 0, background: this.state.background, width: this.state.width, height: this.state.height}}>
                 <div onMouseMove={this.move} style={{
                     width: this.state.width,
                     height: this.state.height,

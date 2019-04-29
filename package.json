@@ -28,8 +28,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
-  "author": "",
-  "homepage": "",
+  "author": "Eric Moynihan <git@moynihan.io>",
+  "homepage": "https://globules.moynihan.io/",
   "license": "MIT",
   "repository": "",
   "keywords": [
