@@ -1,7 +1,7 @@
 {
   "name": "react-globules",
   "version": "1.0.0",
-  "description": "react-globules React component",
+  "description": "React JS component that gives your project a cool interactive background ",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
