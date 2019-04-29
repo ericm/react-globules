@@ -1,16 +1,29 @@
-# react-globules
+# React Globules
 
-[![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
 
-[Demo](https://globules.moynihan.io/)
+React JS component that gives your project a cool interactive background 
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+## [Demo](https://globules.moynihan.io/)
+
+## Properties
+
+```html
+<Globules
+    widthPercent={true} 
+    heightPercent={true} 
+    width={100} // % or px
+    height={100} // % or px
+    speed={4} // 0 - 9
+    density={50} // 0 - 99
+    color={'#ffffff'} // 6 char long hex
+    background={'#000000'} // 6 char long hex
+>
+    <p>Test</p>
+</Globules>
+```
+
 
 [npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
 [npm]: https://www.npmjs.org/package/npm-package
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
