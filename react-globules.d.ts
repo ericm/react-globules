@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 
 export interface GlobulesProps {
   widthPercent: boolean;
@@ -15,4 +15,7 @@ export interface GlobulesState {
   background: string;
   density: number;
 }
-export default class Globules extends Component<GlobulesProps, GlobulesState> {}
+export default class Globules extends React.Component<
+  GlobulesProps,
+  GlobulesState
+> {}
