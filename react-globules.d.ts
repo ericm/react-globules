@@ -7,6 +7,8 @@ export interface GlobulesProps {
   height: number;
   speed: number;
   density: number;
+  color?: string;
+  background?: string;
 }
 export interface GlobulesState {
   width: number;
