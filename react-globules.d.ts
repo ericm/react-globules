@@ -9,6 +9,7 @@ export interface GlobulesProps {
   density: number;
   color?: string;
   background?: string;
+  genMore?: boolean;
 }
 export interface GlobulesState {
   width: number;

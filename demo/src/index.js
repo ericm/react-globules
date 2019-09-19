@@ -13,6 +13,7 @@ class Demo extends Component {
                 height={100} 
                 speed={4}
                 density={50}
+                genMore={false}
             >
             <div style={{height: "inherit"}}>
                 <h1 style={{lineHeight: "100vh", textAlign: "center", color: "#ffffffcc"}}>React Globules 

@@ -29,6 +29,7 @@ class Glob {
 }
 
 export default class extends Component {
+    genMore = false;
 
     constructor(props) {
         super(props);
@@ -40,6 +41,9 @@ export default class extends Component {
             density: this.props.density || 30
         };
         document.body.onresize = () => this.resize.bind(this)();
+        if (this.props.genMore) {
+            this.genMore = true;
+        }
     }
 
     async componentDidMount() {
@@ -53,7 +57,7 @@ export default class extends Component {
     changed = [];
 
     step = () => {
-        if (this.count === 500) {
+        if (this.count === 500 && this.genMore) {
             this.count = 0;
             this.newRand(this.rands);
         }
